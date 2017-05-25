@@ -264,10 +264,10 @@ class XYLike(PluginPrototype):
         :type likelihood_model_instance: astromodels.Model
         """
 
-        assert likelihood_model_instance.get_number_of_extended_sources() == 0, "Extended sources are not supported by " \
-                                                                             "XYLike plugin"
+        #assert likelihood_model_instance.get_number_of_extended_sources() == 0, "Extended sources are not supported by " \
+        #                                                                     "XYLike plugin"
 
-        assert likelihood_model_instance.get_number_of_point_sources() > 0, "You have to have at least one point source"
+        #assert likelihood_model_instance.get_number_of_point_sources() > 0, "You have to have at least one point source"
 
         if self._source_name is not None:
 
@@ -284,8 +284,8 @@ class XYLike(PluginPrototype):
 
             n_point_sources = self._likelihood_model.get_number_of_point_sources()
 
-            assert n_point_sources > 0, "You need to have at least one point source defined"
-            assert self._likelihood_model.get_number_of_extended_sources() == 0, "XYLike does not support extended sources"
+            #assert n_point_sources > 0, "You need to have at least one point source defined"
+            #assert self._likelihood_model.get_number_of_extended_sources() == 0, "XYLike does not support extended sources"
 
             # Make a function which will stack all point sources (XYLike do not support spatial dimension)
 
@@ -302,6 +302,10 @@ class XYLike(PluginPrototype):
             try:
 
                 expectation = self._likelihood_model.sources[self._source_name](self._x)
+
+            except TypeError:
+
+                expectation = self._likelihood_model.sources[self._source_name].get_total_flux(self._x)
 
             except KeyError:
 
